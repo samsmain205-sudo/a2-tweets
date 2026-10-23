@@ -10,13 +10,28 @@ class Tweet {
 	//returns either 'live_event', 'achievement', 'completed_event', or 'miscellaneous'
     get source():string {
         //TODO: identify whether the source is a live event, an achievement, a completed event, or miscellaneous.
-        return "unknown";
+
+        if (this.text.toLowerCase().includes("live")) {
+            return "live_event";
+        }
+        if (this.text.toLowerCase().includes("achieved")){
+            return "achievement";
+        }
+        if (this.text.toLowerCase().startsWith("just completed") || (this.text.toLowerCase().startsWith("just posted"))){
+            return "completed_event"; 
+        }
+        else {
+            return "miscellaneous";
+        }
     }
 
     //returns a boolean, whether the text includes any content written by the person tweeting.
     get written():boolean {
-        //TODO: identify whether the tweet is written
-        return false;
+        if (this.text == null || this.text == "") {
+            return false;}
+        else {
+            return true;
+        }
     }
 
     get writtenText():string {
@@ -32,7 +47,33 @@ class Tweet {
             return "unknown";
         }
         //TODO: parse the activity type from the text of the tweet
-        return "";
+        if (this.text.includes("run")) {
+        return "run";
+        }
+        
+        if (this.text.includes("walk")) {
+        return "walk";
+        }
+        
+        if (this.text.includes("elliptical")) {
+        return "elliptical";
+        }
+        
+        if (this.text.includes("spinning")) {
+        return "spinning";
+        } 
+
+        if (this.text.includes("meditation")) {
+        return "meditation";
+        } 
+
+        if (this.text.includes("bike")) {
+        return "bike";
+        } 
+
+        else{
+            return "unknown";
+        }
     }
 
     get distance():number {
