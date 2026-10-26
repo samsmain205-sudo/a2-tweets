@@ -61,11 +61,33 @@ function parseTweets(runkeeper_tweets) {
 	document.getElementById('secondMost').innerText = name2;
 	document.getElementById('thirdMost').innerText = name3;
 
+	let weekendTotal = 0;
+	let weekendCount = 0;
+	let weekdayTotal = 0;
+	let weekdayCount = 0;
 
+	for (let activity of activity_array) { 
+		if (((activity.time.getDay()) == 6) || (activity.time.getDay() == 0)){
+			weekendCount++ ;
+			weekendTotal += activity.distance;}
+		else{
+			weekdayCount ++;
+			weekdayTotal += activity.distance	
+		}
+	}
 
+	let weekendAverage = weekendTotal / weekendCount;
+	let weekdayAverage = weekdayTotal / weekdayCount;
+	let longest_day = "";
+	if (weekendAverage > weekdayAverage){
+		longest_day = "weekends";
+	}
+	else {
+		longest_day = "weekdays";
+	}
+	document.getElementById('weekdayOrWeekendLonger').innerText = longest_day;
 
-
-
+	
 
 	let longest_activity = activity_array[0];
 	let shortest_activity = activity_array[0];
