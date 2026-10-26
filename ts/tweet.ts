@@ -90,10 +90,16 @@ class Tweet {
             return 0;
         }
         //TODO: prase the distance from the text of the tweet
-        //let mil_distance = this.text.indexOf("mi");
-        //let km_distance = this.text.indexOf("km");
-    
-        return 0;
+        let mil_distance = this.text.indexOf("mi");
+        let km_distance = this.text.indexOf(" km");
+        if (km_distance){
+            let distance = this.text.split(" km")[0].split(" ").pop();
+            let converted_distance = Number(distance) * 0.621371;
+            return converted_distance
+        }
+        else{
+            return Number(mil_distance);
+        }
     }
 
     getHTMLTableRow(rowNumber:number):string {
