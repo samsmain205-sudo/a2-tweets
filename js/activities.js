@@ -102,10 +102,7 @@ function parseTweets(runkeeper_tweets) {
 	document.getElementById('longestActivityType').innerText = longest_activity.activityType;
 	document.getElementById('shortestActivityType').innerText = shortest_activity.activityType;
 
-	let activityChartData = Object.entries(frequency).map(([activity, count]) => ({
-  	activity,
-  	count
-	}));
+	let activityChartData = Object.entries(frequency).map(([activity, count]) => ({activity,count}));
 
 	activity_vis_spec = {
 	  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
@@ -127,33 +124,80 @@ function parseTweets(runkeeper_tweets) {
 	    }}}
 
 	  //TODO: Add mark and encoding
-	let distanceDayChartData = Object.entries(activity_array).map(([activity, distance, day ]) => ({
-  	activity,
-  	count
-	}));
+
+	let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];  
+	let distanceDayChartData = activity_array
+		.filter(tweet => [name1, name2, name3].includes(tweet.activityType))
+		.map(tweet => ({activity: tweet.activityType, distance: tweet.distance, day: days[tweet.time.getDay()]}));
+	
 	distances_by_day = {
 	  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
 	  "description": "A graph of the number of Tweets containing each type of activity.",
 	  "data": {
-	    "values": activityChartData
+	    "values": distanceDayChartData
 	  },
-	  mark: "bar",
+	  mark: "point",
 	  encoding: {
 		x: {
-			field: "activity",
+			field: "day",
 			type: "nominal",
-			title: "Activity type",
+			title: " Time (day)",
+			sort: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 			},
 		y: {
-			field: "count",
+			field: "distance",
 			type: "quantitative",
-			title: "Freqeuncy",
-	    },
+			title: "Distance"},
+		
+	     color: {field: "activity", type: "nominal"},
+		}
+	}
+	
+	distances_by_mean = {
+	  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+	  "description": "A graph of the number of Tweets containing each type of activity.",
+	  "data": {
+	    "values": distanceDayChartData
+	  },
+	  mark: "point",
+	  encoding: {
+		x: {
+			field: "day",
+			type: "nominal",
+			title: " Time (day)",
+			sort: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+			},
+		y: {
+			field: "distance",
+			"aggregate": "mean",
+			type: "quantitative",
+			title: "Distance"},
+		
+	     color: {field: "activity", type: "nominal"},
+		}
+	}
 
 	  //TODO: Add mark and encoding
-	}}
-	vegaEmbed('#activityVis', activity_vis_spec, {actions:false});
 
+	vegaEmbed('#activityVis', activity_vis_spec, {actions:false});
+	vegaEmbed('#distanceVis', distances_by_day, {actions:false});
+
+
+	let switch_charts = false;
+	document.getElementById("aggregate").addEventListener('click', function(){
+		switch_charts = !switch_charts;
+		if (switch_charts){
+
+			vegaEmbed('#distanceVis', distances_by_mean, {actions:false});
+			document.getElementById('aggregate').innerText = "Show activities";
+		}
+		else{
+			vegaEmbed('#distanceVis', distances_by_day, {actions:false});
+			document.getElementById('aggregate').innerText = "Show all means";
+
+		}
+
+	});
 	//TODO: create the visualizations which group the three most-tweeted activities by the day of the week.
 	//Use those visualizations to answer the questions about which activities tended to be longest and when.
 }
