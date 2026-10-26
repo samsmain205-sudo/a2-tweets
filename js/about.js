@@ -50,10 +50,17 @@ function parseTweets(runkeeper_tweets) {
 	math.format(live_pct, {notation: 'fixed', precision: 2}) + '%';
 
 	let miscellaneous_tweets =  tweet_array.filter(tweet => tweet.source == 'miscellaneous');
-	let miscellaneous_pct = (live_tweets.length / total_tweets)*100;
+	let miscellaneous_pct = (miscellaneous_tweets.length / total_tweets)*100;
 	document.getElementsByClassName('miscellaneous')[0].innerText = miscellaneous_tweets.length;
 	document.getElementsByClassName('miscellaneousPct')[0].innerText = 
 	math.format(miscellaneous_pct, {notation: 'fixed', precision: 2}) + '%';
+
+	let written_tweets = tweet_array.filter(tweet => tweet.written);
+	let written_pct = (written_tweets.length / total_tweets)*100;
+	document.getElementsByClassName('written')[0].innerText = written_tweets.length;
+	document.getElementsByClassName('writtenPct')[0].innerText = 
+	math.format(written_pct, {notation: 'fixed', precision: 2}) + '%';
+	document.getElementsByClassName('completedEvents')[1].innerText = completed_tweets.length;
 }
 
 //Wait for the DOM to load

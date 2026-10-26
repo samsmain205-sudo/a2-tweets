@@ -27,10 +27,11 @@ class Tweet {
 
     //returns a boolean, whether the text includes any content written by the person tweeting.
     get written():boolean {
-        if (this.text == null || this.text == "") {
-            return false;}
-        else {
+        if (this.text.includes(" - ")){
             return true;
+        }
+        else {
+            return false;
         }
     }
 
@@ -39,7 +40,15 @@ class Tweet {
             return "";
         }
         //TODO: parse the written text from the tweet
-        return "";
+        else {
+            let written_text_starts = this.text.indexOf(" - ");
+            let link_starts = this.text.indexOf("https://t.co/");
+
+            let just_text = this.text.substring(written_text_starts + 3, link_starts).
+            replace(/#Runkeeper/gi, "").
+            trim();
+            return just_text;
+        }
     }
 
     get activityType():string {
@@ -81,6 +90,9 @@ class Tweet {
             return 0;
         }
         //TODO: prase the distance from the text of the tweet
+        //let mil_distance = this.text.indexOf("mi");
+        //let km_distance = this.text.indexOf("km");
+    
         return 0;
     }
 
