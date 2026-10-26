@@ -182,18 +182,16 @@ function parseTweets(runkeeper_tweets) {
 	vegaEmbed('#activityVis', activity_vis_spec, {actions:false});
 	vegaEmbed('#distanceVis', distances_by_day, {actions:false});
 
-
 	let switch_charts = false;
 	document.getElementById("aggregate").addEventListener('click', function(){
 		switch_charts = !switch_charts;
 		if (switch_charts){
-
 			vegaEmbed('#distanceVis', distances_by_mean, {actions:false});
-			document.getElementById('aggregate').innerText = "Show activities";
+			document.getElementById('aggregate').innerText = "Show all activites";
 		}
 		else{
 			vegaEmbed('#distanceVis', distances_by_day, {actions:false});
-			document.getElementById('aggregate').innerText = "Show all means";
+			document.getElementById('aggregate').innerText = "Show means";
 
 		}
 
