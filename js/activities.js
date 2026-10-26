@@ -14,6 +14,59 @@ function parseTweets(runkeeper_tweets) {
 	activity_types = new Set(activity_array.map(tweet => tweet.activityType));
 	document.getElementById('numberActivities').innerText = activity_types.size;
 
+	let frequency = {}
+
+	for (let activity of activity_array){
+
+		let type = activity.activityType
+		if (type in frequency){
+			frequency[type]++;
+		}
+		else{
+			frequency[type] = 1;
+		}
+	}
+	let first_freq = 0;
+	let name1 = "";
+	
+	let sec_freq = 0;
+	let name2 = "";
+	
+	let third_freq = 0;
+	let name3 = "";
+	for (let[key, values] of Object.entries(frequency)){
+		if (first_freq < values){
+			third_freq = sec_freq;
+			name3 = name2;
+			
+			sec_freq = first_freq;
+			name2 = name1;
+			
+			first_freq = values;
+			name1 = key;
+		}
+		else if (values > sec_freq){
+			third_freq = sec_freq;
+			name3 = name2;
+			
+			sec_freq = values
+			name2 = key;
+		}
+		else if (values > third_freq){
+			third_freq = values;
+			name3 = key;
+		}
+	}
+	document.getElementById('firstMost').innerText = name1;
+	document.getElementById('secondMost').innerText = name2;
+	document.getElementById('thirdMost').innerText = name3;
+
+
+
+
+
+
+
 	let longest_activity = activity_array[0];
 	let shortest_activity = activity_array[0];
 	for (let activity of activity_array) {
@@ -24,7 +77,7 @@ function parseTweets(runkeeper_tweets) {
 			longest_activity = activity;
 		}	
 	}
-	console.log(longest_activity);
+
 	document.getElementById('longestActivityType').innerText = longest_activity.activityType;
 	document.getElementById('shortestActivityType').innerText = shortest_activity.activityType;
 
