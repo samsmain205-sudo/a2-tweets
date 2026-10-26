@@ -17,7 +17,6 @@ function parseTweets(runkeeper_tweets) {
 	let frequency = {}
 
 	for (let activity of activity_array){
-
 		let type = activity.activityType
 		if (type in frequency){
 			frequency[type]++;
@@ -103,19 +102,56 @@ function parseTweets(runkeeper_tweets) {
 	document.getElementById('longestActivityType').innerText = longest_activity.activityType;
 	document.getElementById('shortestActivityType').innerText = shortest_activity.activityType;
 
+	let activityChartData = Object.entries(frequency).map(([activity, count]) => ({
+  	activity,
+  	count
+	}));
+
 	activity_vis_spec = {
 	  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
 	  "description": "A graph of the number of Tweets containing each type of activity.",
 	  "data": {
-	    "values": tweet_array
+	    "values": activityChartData
 	  },
 	  mark: "bar",
 	  encoding: {
-		x
-	  }
+		x: {
+			field: "activity",
+			type: "nominal",
+			title: "Activity type",
+			},
+		y: {
+			field: "count",
+			type: "quantitative",
+			title: "Freqeuncy",
+	    }}}
 
 	  //TODO: Add mark and encoding
-	};
+	let distanceDayChartData = Object.entries(activity_array).map(([activity, distance, day ]) => ({
+  	activity,
+  	count
+	}));
+	distances_by_day = {
+	  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+	  "description": "A graph of the number of Tweets containing each type of activity.",
+	  "data": {
+	    "values": activityChartData
+	  },
+	  mark: "bar",
+	  encoding: {
+		x: {
+			field: "activity",
+			type: "nominal",
+			title: "Activity type",
+			},
+		y: {
+			field: "count",
+			type: "quantitative",
+			title: "Freqeuncy",
+	    },
+
+	  //TODO: Add mark and encoding
+	}}
 	vegaEmbed('#activityVis', activity_vis_spec, {actions:false});
 
 	//TODO: create the visualizations which group the three most-tweeted activities by the day of the week.
