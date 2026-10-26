@@ -10,6 +10,23 @@ function parseTweets(runkeeper_tweets) {
 	});
 
 	//TODO: create a new array or manipulate tweet_array to create a graph of the number of tweets containing each type of activity.
+	activity_array = tweet_array.filter(tweet => tweet.source == 'completed_event');
+	activity_types = new Set(activity_array.map(tweet => tweet.activityType));
+	document.getElementById('numberActivities').innerText = activity_types.size;
+
+	let longest_activity = activity_array[0];
+	let shortest_activity = activity_array[0];
+	for (let activity of activity_array) {
+		if (activity.distance < shortest_activity.distance) {
+			shortest_activity = activity;
+		}
+		if (activity.distance > longest_activity.distance) {
+			longest_activity = activity;
+		}	
+	}
+	console.log(longest_activity);
+	document.getElementById('longestActivityType').innerText = longest_activity.activityType;
+	document.getElementById('shortestActivityType').innerText = shortest_activity.activityType;
 
 	activity_vis_spec = {
 	  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",

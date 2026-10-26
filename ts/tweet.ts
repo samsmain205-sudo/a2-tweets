@@ -79,6 +79,9 @@ class Tweet {
         if (this.text.includes("bike")) {
         return "bike";
         } 
+        if (this.text.includes("swim")) {
+        return "swim";
+        } 
 
         else{
             return "unknown";
@@ -90,15 +93,16 @@ class Tweet {
             return 0;
         }
         //TODO: prase the distance from the text of the tweet
-        let mil_distance = this.text.indexOf("mi");
+
         let km_distance = this.text.indexOf(" km");
-        if (km_distance){
+        if (km_distance !== -1){
             let distance = this.text.split(" km")[0].split(" ").pop();
             let converted_distance = Number(distance) * 0.621371;
             return converted_distance
         }
         else{
-            return Number(mil_distance);
+            let distance = this.text.split(" mi")[0].split(" ").pop();
+            return Number(distance);
         }
     }
 
