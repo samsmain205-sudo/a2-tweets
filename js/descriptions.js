@@ -29,25 +29,10 @@ function addEventHandlerForSearch() {
 			return;
 		}
 
-        filtering.forEach((item, index) => {
-			let row = document.createElement("tr");
-			let numCell = document.createElement("td");
-    		numCell.textContent = index + 1;
-            row.appendChild(numCell);
-
-            let typeCell = document.createElement("td");
-            typeCell.textContent = item.activityType;
-            row.appendChild(typeCell);
-
-			let textCell = document.createElement("td");
-            textCell.textContent = item.text;
-            row.appendChild(textCell);
-
-		
-			table_body.appendChild(row);
-  
-		});
-    });}
+        table_body.innerHTML = filtering
+		.map((item, index) => item.getHTMLTableRow(index + 1)).join("");
+	
+    })}
 
 	
 
